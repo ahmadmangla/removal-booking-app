@@ -286,6 +286,7 @@ const BookingForm = () => {
             </label>
             <div className="my-2">
               <Datepicker
+                //@ts-ignore
                 value={value}
                 inputClassName="w-full h-[50px] bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 transition-all   border focus:border-2 border-t-transparent focus:border-t-transparent text-md p-3 rounded-[7px] focus:border-gray-900"
                 placeholder={"Select a Date"}
