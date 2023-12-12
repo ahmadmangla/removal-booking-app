@@ -1,5 +1,5 @@
 import Link from "next/link";
-import vanImage from "../assets/images/removal-van.jpg";
+import vanImage from "@/public/removal-van.jpg";
 
 const HeroSection = () => {
   return (

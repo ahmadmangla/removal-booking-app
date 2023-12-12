@@ -1,7 +1,7 @@
 "Use Client";
 
 import Image from "next/image";
-import Logo from "../assets/logo.jpg";
+import Logo from "@/public/logo.jpg";
 import Link from "next/link";
 
 const Header = () => {

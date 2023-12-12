@@ -1,209 +1,264 @@
 "use client";
 
 import { useState } from "react";
-import dayjs, { Dayjs } from "dayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import Datepicker from "react-tailwindcss-datepicker";
 import { MapPinIcon } from "@heroicons/react/24/outline";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
 import { PhoneIcon } from "@heroicons/react/24/outline";
 import Input from "./formElements/Input";
 import Select from "./formElements/Select";
+import DistanceCalculator from "./DistanceCalculator";
 
 const formData = {
-  numberOfMovers: ["1", "2"],
-  MovingFrom: [
-    {
-      selectFloor: [
-        "Basement",
-        "Ground Floor",
-        "Ground + Basement",
-        "Ground + 1st",
-        "Ground + 1st + 2nd",
-        "Ground + 1st + 2nd + 3rd",
-        "Ground + 1st + Basement",
-        "Ground + 1st + 2nd + Basement",
-        "Ground + 1st + 2nd + 3rd + Basement",
-        "1st Floor",
-        "2nd Floor",
-        "3rd Floor",
-        "4th Floor",
-        "5th Floor and over with lift",
-        "5th Floor",
-        "6th Floor",
-        "7th Floor",
+  numberOfMovers: {
+    name: "Number of Movers",
+    options: [
+      {
+        name: "1",
+        charges: 15,
+      },
+      {
+        name: "2 (A helper Included)",
+        charges: 30,
+      },
+    ],
+  },
+  movingFrom: {
+    name: "Moving From",
+    selectFloor: {
+      name: "Select Floor",
+      options: [
+        { name: "Basement", charges: 5 },
+        { name: "Ground Floor", charges: 0 },
+        { name: "Ground + Basement", charges: 10 },
+        { name: "Ground + 1st", charges: 5 },
+        { name: "Ground + 1st + 2nd", charges: 10 },
+        { name: "Ground + 1st + 2nd + 3rd", charges: 15 },
+        { name: "Ground + 1st + Basement", charges: 10 },
+        { name: "Ground + 1st + 2nd + Basement", charges: 15 },
+        { name: "Ground + 1st + 2nd + 3rd + Basement", charges: 20 },
+        { name: "1st Floor", charges: 5 },
+        { name: "2nd Floor", charges: 10 },
+        { name: "3rd Floor", charges: 15 },
+        { name: "4th Floor", charges: 20 },
+        { name: "5th Floor and over with lift", charges: 5 },
+        { name: "5th Floor", charges: 25 },
+        { name: "6th Floor", charges: 30 },
+        { name: "7th Floor", charges: 35 },
       ],
-
-      isThereALift: false,
-
-      loadingTime: [
-        "15 min",
-        "30 min",
-        "45 min",
-        "1 hour",
-        "1 hour 30 min",
-        "2 hours",
-        "2 hours 30 min",
-        "3 hours",
-        "3 hours 30 min",
-        "4 hours",
-        "4 hours 30 min",
-        "5 hours",
-        "5 hours 30 min",
-        "6 hours",
-        "6 hours 30 min",
-        "7 hours",
-        "7 hours 30 min",
-        "8 hours",
-      ],
-
-      packingTime: [
-        "Not Required",
-        "15 min",
-        "30 min",
-        "45 min",
-        "1 hour",
-        "1 hour 30 min",
-        "2 hours",
-        "2 hours 30 min",
-        "3 hours",
-        "3 hours 30 min",
-        "4 hours",
-        "4 hours 30 min",
-        "5 hours",
-        "5 hours 30 min",
-        "6 hours",
-        "6 hours 30 min",
-        "7 hours",
-        "7 hours 30 min",
-        "8 hours",
-      ],
-      disassemblyTime: [
-        "Not Required",
-        "15 min",
-        "30 min",
-        "45 min",
-        "1 hour",
-        "1 hour 30 min",
-        "2 hours",
-        "2 hours 30 min",
-        "3 hours",
-        "3 hours 30 min",
-        "4 hours",
-        "4 hours 30 min",
-        "5 hours",
-        "5 hours 30 min",
-        "6 hours",
-        "6 hours 30 min",
-        "7 hours",
-        "7 hours 30 min",
-        "8 hours",
-      ],
-      parkingOptions: ["Free", "On a Meter - I will Pay", "Restricted with limited parking time", "Restricted - I will provide Parking Permit", "Parking Fine Deposit (£80 + VAT)"],
     },
-  ],
 
-  MovingTo: [
-    {
-      selectFloor: [
-        "Basement",
-        "Ground Floor",
-        "Ground + Basement",
-        "Ground + 1st",
-        "Ground + 1st + 2nd",
-        "Ground + 1st + 2nd + 3rd",
-        "Ground + 1st + Basement",
-        "Ground + 1st + 2nd + Basement",
-        "Ground + 1st + 2nd + 3rd + Basement",
-        "1st Floor",
-        "2nd Floor",
-        "3rd Floor",
-        "4th Floor",
-        "5th Floor and over with lift",
-        "5th Floor",
-        "6th Floor",
-        "7th Floor",
-      ],
+    isThereALift: false,
 
-      unLoadingTime: [
-        "15 min",
-        "30 min",
-        "45 min",
-        "1 hour",
-        "1 hour 30 min",
-        "2 hours",
-        "2 hours 30 min",
-        "3 hours",
-        "3 hours 30 min",
-        "4 hours",
-        "4 hours 30 min",
-        "5 hours",
-        "5 hours 30 min",
-        "6 hours",
-        "6 hours 30 min",
-        "7 hours",
-        "7 hours 30 min",
-        "8 hours",
+    loadingTime: {
+      name: "Loading Time",
+      options: [
+        { name: "15 min", charges: 15 },
+        { name: "30 min", charges: 15 },
+        { name: "45 min", charges: 15 },
+        { name: "1 hour", charges: 15 },
+        { name: "1 hour 30 min", charges: 30 },
+        { name: "2 hours", charges: 30 },
+        { name: "2 hours 30 min", charges: 45 },
+        { name: "3 hours", charges: 45 },
+        { name: "3 hours 30 min", charges: 60 },
+        { name: "4 hours", charges: 60 },
+        { name: "4 hours 30 min", charges: 75 },
+        { name: "5 hours", charges: 75 },
+        { name: "5 hours 30 min", charges: 90 },
+        { name: "6 hours", charges: 90 },
+        { name: "6 hours 30 min", charges: 105 },
+        { name: "7 hours", charges: 105 },
+        { name: "7 hours 30 min", charges: 120 },
+        { name: "8 hours", charges: 120 },
       ],
-
-      unPackingTime: [
-        "Not Required",
-        "15 min",
-        "30 min",
-        "45 min",
-        "1 hour",
-        "1 hour 30 min",
-        "2 hours",
-        "2 hours 30 min",
-        "3 hours",
-        "3 hours 30 min",
-        "4 hours",
-        "4 hours 30 min",
-        "5 hours",
-        "5 hours 30 min",
-        "6 hours",
-        "6 hours 30 min",
-        "7 hours",
-        "7 hours 30 min",
-        "8 hours",
-      ],
-      AssemblyTime: [
-        "Not Required",
-        "15 min",
-        "30 min",
-        "45 min",
-        "1 hour",
-        "1 hour 30 min",
-        "2 hours",
-        "2 hours 30 min",
-        "3 hours",
-        "3 hours 30 min",
-        "4 hours",
-        "4 hours 30 min",
-        "5 hours",
-        "5 hours 30 min",
-        "6 hours",
-        "6 hours 30 min",
-        "7 hours",
-        "7 hours 30 min",
-        "8 hours",
-      ],
-      parkingOptions: ["Free", "On a Meter - I will Pay", "Restricted with limited parking time", "Restricted - I will provide Parking Permit", "Parking Fine Deposit (£80 + VAT)"],
     },
-  ],
 
-  additionalOptions: [
-    {
-      CongestionCharge: ["Yes", "No"],
-      UltraLowEmissionZone: ["Yes", "No"],
-      InsuranceOptions: ["No, I have home content insurance - £0", "Cover up to £5000 - £15", "Cover up to £10000 - £30", "Cover up to £15000 - £45"],
-      passengerTraveling: ["Yes", "No"],
-      needPackingMaterials: ["Yes", "No"],
+    packingTime: {
+      name: "Packing Time",
+      options: [
+        { name: "Not Required", charges: 0 },
+        { name: "15 min", charges: 15 },
+        { name: "30 min", charges: 15 },
+        { name: "45 min", charges: 15 },
+        { name: "1 hour", charges: 15 },
+        { name: "1 hour 30 min", charges: 15 },
+        { name: "2 hours", charges: 15 },
+        { name: "2 hours 30 min", charges: 15 },
+        { name: "3 hours", charges: 15 },
+        { name: "3 hours 30 min", charges: 15 },
+        { name: "4 hours", charges: 15 },
+        { name: "4 hours 30 min", charges: 15 },
+        { name: "5 hours", charges: 15 },
+        { name: "5 hours 30 min", charges: 15 },
+        { name: "6 hours", charges: 15 },
+        { name: "6 hours 30 min", charges: 15 },
+        { name: "7 hours", charges: 15 },
+        { name: "7 hours 30 min", charges: 15 },
+        { name: "8 hours", charges: 15 },
+      ],
     },
-  ],
+    disassemblyTime: {
+      name: "Disassembly Time",
+      options: [
+        { name: "Not Required", charges: 0 },
+        { name: "15 min", charges: 15 },
+        { name: "30 min", charges: 15 },
+        { name: "45 min", charges: 15 },
+        { name: "1 hour", charges: 15 },
+        { name: "1 hour 30 min", charges: 15 },
+        { name: "2 hours", charges: 15 },
+        { name: "2 hours 30 min", charges: 15 },
+        { name: "3 hours", charges: 15 },
+        { name: "3 hours 30 min", charges: 15 },
+        { name: "4 hours", charges: 15 },
+        { name: "4 hours 30 min", charges: 15 },
+        { name: "5 hours", charges: 15 },
+        { name: "5 hours 30 min", charges: 15 },
+        { name: "6 hours", charges: 15 },
+        { name: "6 hours 30 min", charges: 15 },
+        { name: "7 hours", charges: 15 },
+        { name: "7 hours 30 min", charges: 15 },
+        { name: "8 hours", charges: 15 },
+      ],
+    },
+  },
+  movingTo: {
+    name: "Moving To",
+    selectFloor: {
+      name: "Select Floor",
+      options: [
+        { name: "Basement", charges: 5 },
+        { name: "Ground Floor", charges: 0 },
+        { name: "Ground + Basement", charges: 10 },
+        { name: "Ground + 1st", charges: 5 },
+        { name: "Ground + 1st + 2nd", charges: 10 },
+        { name: "Ground + 1st + 2nd + 3rd", charges: 15 },
+        { name: "Ground + 1st + Basement", charges: 10 },
+        { name: "Ground + 1st + 2nd + Basement", charges: 15 },
+        { name: "Ground + 1st + 2nd + 3rd + Basement", charges: 20 },
+        { name: "1st Floor", charges: 5 },
+        { name: "2nd Floor", charges: 10 },
+        { name: "3rd Floor", charges: 15 },
+        { name: "4th Floor", charges: 20 },
+        { name: "5th Floor and over with lift", charges: 5 },
+        { name: "5th Floor", charges: 25 },
+        { name: "6th Floor", charges: 30 },
+        { name: "7th Floor", charges: 35 },
+      ],
+    },
+
+    isThereALift: false,
+
+    unLoadingTime: {
+      name: "Unloading Time",
+      options: [
+        { name: "15 min", charges: 15 },
+        { name: "30 min", charges: 15 },
+        { name: "45 min", charges: 15 },
+        { name: "1 hour", charges: 15 },
+        { name: "1 hour 30 min", charges: 30 },
+        { name: "2 hours", charges: 30 },
+        { name: "2 hours 30 min", charges: 45 },
+        { name: "3 hours", charges: 45 },
+        { name: "3 hours 30 min", charges: 60 },
+        { name: "4 hours", charges: 60 },
+        { name: "4 hours 30 min", charges: 75 },
+        { name: "5 hours", charges: 75 },
+        { name: "5 hours 30 min", charges: 90 },
+        { name: "6 hours", charges: 90 },
+        { name: "6 hours 30 min", charges: 105 },
+        { name: "7 hours", charges: 105 },
+        { name: "7 hours 30 min", charges: 120 },
+        { name: "8 hours", charges: 120 },
+      ],
+    },
+
+    unPackingTime: {
+      name: "Unpacking Time",
+      options: [
+        { name: "Not Required", charges: 0 },
+        { name: "15 min", charges: 15 },
+        { name: "30 min", charges: 15 },
+        { name: "45 min", charges: 15 },
+        { name: "1 hour", charges: 15 },
+        { name: "1 hour 30 min", charges: 15 },
+        { name: "2 hours", charges: 15 },
+        { name: "2 hours 30 min", charges: 15 },
+        { name: "3 hours", charges: 15 },
+        { name: "3 hours 30 min", charges: 15 },
+        { name: "4 hours", charges: 15 },
+        { name: "4 hours 30 min", charges: 15 },
+        { name: "5 hours", charges: 15 },
+        { name: "5 hours 30 min", charges: 15 },
+        { name: "6 hours", charges: 15 },
+        { name: "6 hours 30 min", charges: 15 },
+        { name: "7 hours", charges: 15 },
+        { name: "7 hours 30 min", charges: 15 },
+        { name: "8 hours", charges: 15 },
+      ],
+    },
+    assemblyTime: {
+      name: "assembly Time",
+      options: [
+        { name: "Not Required", charges: 0 },
+        { name: "15 min", charges: 15 },
+        { name: "30 min", charges: 15 },
+        { name: "45 min", charges: 15 },
+        { name: "1 hour", charges: 15 },
+        { name: "1 hour 30 min", charges: 15 },
+        { name: "2 hours", charges: 15 },
+        { name: "2 hours 30 min", charges: 15 },
+        { name: "3 hours", charges: 15 },
+        { name: "3 hours 30 min", charges: 15 },
+        { name: "4 hours", charges: 15 },
+        { name: "4 hours 30 min", charges: 15 },
+        { name: "5 hours", charges: 15 },
+        { name: "5 hours 30 min", charges: 15 },
+        { name: "6 hours", charges: 15 },
+        { name: "6 hours 30 min", charges: 15 },
+        { name: "7 hours", charges: 15 },
+        { name: "7 hours 30 min", charges: 15 },
+        { name: "8 hours", charges: 15 },
+      ],
+    },
+  },
+
+  additionalOptions: {
+    name: "Additional Options",
+    CongestionCharge: {
+      name: "Congestion Charge",
+      options: [
+        { name: "Yes", charges: 15 },
+        { name: "No", charges: 0 },
+      ],
+      charges: 15,
+    },
+    UltraLowEmissionZone: {
+      name: "Ultra Low Emission Zone",
+      options: [
+        { name: "Yes", charges: 15 },
+        { name: "No", charges: 0 },
+      ],
+    },
+
+    InsuranceOptions: {
+      name: "Insurance Options",
+      options: [
+        { name: "Yes", charges: 15 },
+        { name: 'No, I have home content insurance - £0", "Cover up to £5000 - £15", "Cover up to £10000 - £30", "Cover up to £15000 - £45', charges: 0 },
+      ],
+    },
+
+    passengerTraveling: {
+      name: "Passenger Travelling",
+      options: [
+        { name: "Yes", charges: 15 },
+        { name: "No", charges: 0 },
+      ],
+    },
+  },
 
   name: "",
   phone: 0,
@@ -211,7 +266,14 @@ const formData = {
 };
 
 const BookingForm = () => {
-  const [value, setValue] = useState<Dayjs | null>(dayjs(new Date()));
+  const [value, setValue] = useState({
+    startDate: new Date(),
+    endDate: new Date().setMonth(11),
+  });
+
+  const handleValueChange = (newValue: any) => {
+    setValue(newValue);
+  };
 
   return (
     <>
@@ -223,11 +285,14 @@ const BookingForm = () => {
               Select Date and Time for your move
             </label>
             <div className="my-2">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={["DateTimePicker"]}>
-                  <DateTimePicker value={value} className="text-sm font-bold" onChange={(newValue) => setValue(newValue)} />
-                </DemoContainer>
-              </LocalizationProvider>
+              <Datepicker
+                value={value}
+                inputClassName="w-full h-[50px] bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 transition-all   border focus:border-2 border-t-transparent focus:border-t-transparent text-md p-3 rounded-[7px] focus:border-gray-900"
+                placeholder={"Select a Date"}
+                useRange={false}
+                onChange={handleValueChange}
+                asSingle={true}
+              />
             </div>
           </div>
 
@@ -235,7 +300,7 @@ const BookingForm = () => {
             <label htmlFor="number-of-movers" className="block text-lg mb-3 font-medium leading-6 text-gray-900">
               Select Number of Movers
             </label>
-            <Select Object={formData.numberOfMovers} label="Number of Movers" />
+            <Select options={formData.numberOfMovers.options} label={formData.numberOfMovers.name} />
           </div>
 
           <div className="mb-8 inner-form-wrapper flex justify-between max-sm:flex-wrap gap-4">
@@ -244,13 +309,12 @@ const BookingForm = () => {
                 Moving From
               </label>
               <div className="wrapper mt-5">
-                <Input label="From Post Code" icon={<MapPinIcon />} />
-                <Select Object={formData.MovingFrom[0].selectFloor} label="Select Floor/Level" />
-                {/* <Select Object={formData.MovingFrom[0].isThereALift ? "Yes": "No"} label="is There a lift?" /> */}
-                <Select Object={formData.MovingFrom[0].loadingTime} label="Loading Time" />
-                <Select Object={formData.MovingFrom[0].packingTime} label="Estimated Packing Time" />
-                <Select Object={formData.MovingFrom[0].disassemblyTime} label="Estimated Disassembly Time" />
-                <Select Object={formData.MovingFrom[0].parkingOptions} label="Estimated Parking Time" />
+                <DistanceCalculator />
+                <Select options={formData.movingFrom.selectFloor.options} label="Select Floor/Level" />
+                {/* <Select options={formData.movingFrom.isThereALift .options? "Yes": "No"} label="is There a lift?" /> */}
+                <Select options={formData.movingFrom.loadingTime.options} label="Loading Time" />
+                <Select options={formData.movingFrom.packingTime.options} label="Estimated Packing Time" />
+                <Select options={formData.movingFrom.disassemblyTime.options} label="Estimated Disassembly Time" />
               </div>
             </div>
             <div className="w-full">
@@ -258,13 +322,12 @@ const BookingForm = () => {
                 Moving To
               </label>
               <div className="wrapper mt-5">
-                <Input label="To Post Code" icon={<MapPinIcon />} />
+                <DistanceCalculator />
 
-                <Select Object={formData.MovingTo[0].selectFloor} label="Select Floor/Level" />
-                <Select Object={formData.MovingTo[0].unLoadingTime} label="Unloading Time" />
-                <Select Object={formData.MovingTo[0].unPackingTime} label="Estimated Unpacking Time" />
-                <Select Object={formData.MovingTo[0].AssemblyTime} label="Estimated Assembly Time" />
-                <Select Object={formData.MovingTo[0].parkingOptions} label="Estimated Parking Time" />
+                <Select options={formData.movingTo.selectFloor.options} label="Select Floor/Level" />
+                <Select options={formData.movingTo.unLoadingTime.options} label="Unloading Time" />
+                <Select options={formData.movingTo.unPackingTime.options} label="Estimated Unpacking Time" />
+                <Select options={formData.movingTo.assemblyTime.options} label="Estimated Assembly Time" />
               </div>
             </div>
             <div className="w-full">
@@ -272,11 +335,9 @@ const BookingForm = () => {
                 Additional Options
               </label>
               <div className="wrapper mt-5">
-                <Select Object={formData.additionalOptions[0].CongestionCharge} label="Congestion Charge" />
-                <Select Object={formData.additionalOptions[0].UltraLowEmissionZone} label="Ultra Low Emission Zone" />
-                <Select Object={formData.additionalOptions[0].InsuranceOptions} label="Select Insurance Options" />
-                <Select Object={formData.additionalOptions[0].passengerTraveling} label="Passenger Travelling in the Van?" />
-                <Select Object={formData.additionalOptions[0].needPackingMaterials} label="Do you need Packing Materials?" />
+                <Select options={formData.additionalOptions.CongestionCharge.options} label="Congestion Charge" />
+                <Select options={formData.additionalOptions.UltraLowEmissionZone.options} label="Ultra Low Emission Zone" />
+                <Select options={formData.additionalOptions.InsuranceOptions.options} label="Select Insurance Options" />
               </div>
             </div>
           </div>
