@@ -21,7 +21,7 @@ const DistanceCalculator = () => {
       .catch((error) => console.error(error));
   }
 
-  const renderFunc = ({ getInputProps, getSuggestionItemProps, suggestions }) => (
+  const renderFunc = ({ getInputProps, getSuggestionItemProps, suggestions }: { getInputProps: any; getSuggestionItemProps: any; suggestions: any }) => (
     <div className="mb-6">
       <div className="relative w-full h-10">
         <div className="absolute grid w-6 h-6 top-3 right-3">
