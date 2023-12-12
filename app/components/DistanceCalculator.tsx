@@ -47,7 +47,14 @@ const DistanceCalculator = () => {
 
   return (
     <>
-      <PlacesAutocomplete value={value.address} searchOptions={searchOptions} onChange={handleChange} shouldFetchSuggestions={value.address.length > 3} onSelect={handleSelect}>
+      <PlacesAutocomplete
+        googleCallbackName="myCallbackFunc"
+        value={value.address}
+        searchOptions={searchOptions}
+        onChange={handleChange}
+        shouldFetchSuggestions={value.address.length > 3}
+        onSelect={handleSelect}
+      >
         {renderFunc}
       </PlacesAutocomplete>
     </>
