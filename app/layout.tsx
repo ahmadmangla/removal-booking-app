@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <Header />
         <main>{children}</main>
-        <Script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPYtl2Sw7lGDd0zX6EInnOTXzm8PFvcmk&libraries=places&callback=Function.prototype" />
+        <Script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPYtl2Sw7lGDd0zX6EInnOTXzm8PFvcmk&libraries=places&callback=Function.prototype" />
       </body>
     </html>
   );
