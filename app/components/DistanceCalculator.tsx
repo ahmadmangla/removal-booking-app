@@ -16,7 +16,7 @@ const DistanceCalculator = () => {
   function handleSelect(address: string) {
     setvalue({ address });
     geocodeByAddress(address)
-      .then((results: Array<string>) => getLatLng(results[0]))
+      .then((results: any) => getLatLng(results[0]))
       .then(({ lat, lng }) => console.log(`Successfully got latitude and longitude of ${address}`, { lat, lng }))
       .catch((error) => console.error(error));
   }
