@@ -5,7 +5,7 @@ import { MapPinIcon } from "@heroicons/react/24/outline";
 const DistanceCalculator = () => {
   const [value, setvalue] = useState({ address: "" });
 
-  function handleChange(address: string) {
+  function handleChange(address) {
     setvalue({ address });
   }
 
@@ -13,15 +13,15 @@ const DistanceCalculator = () => {
     componentRestrictions: { country: "gb" },
   };
 
-  function handleSelect(address: string) {
+  function handleSelect(address) {
     setvalue({ address });
     geocodeByAddress(address)
-      .then((results: any) => getLatLng(results[0]))
+      .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => console.log(`Successfully got latitude and longitude of ${address}`, { lat, lng }))
       .catch((error) => console.error(error));
   }
 
-  const renderFunc = ({ getInputProps, getSuggestionItemProps, suggestions }: { getInputProps: any; getSuggestionItemProps: any; suggestions: any }) => (
+  const renderFunc = ({ getInputProps, getSuggestionItemProps, suggestions }) => (
     <div className="mb-6">
       <div className="relative w-full h-10">
         <div className="absolute grid w-6 h-6 top-3 right-3">
@@ -35,7 +35,7 @@ const DistanceCalculator = () => {
           })}
         />
         <div className="autocomplete-dropdown-container absolute z-10 bg-white p-1">
-          {suggestions.map((suggestion: any) => (
+          {suggestions.map((suggestion) => (
             <div {...getSuggestionItemProps(suggestion)} className="cursor-pointer bg-white border border-b-2 p-2 text-md">
               <span className="text-md font-normal">{suggestion.description}</span>
             </div>
@@ -47,14 +47,7 @@ const DistanceCalculator = () => {
 
   return (
     <>
-      <PlacesAutocomplete
-        googleCallbackName="myCallbackFunc"
-        value={value.address}
-        searchOptions={searchOptions}
-        onChange={handleChange}
-        shouldFetchSuggestions={value.address.length > 3}
-        onSelect={handleSelect}
-      >
+      <PlacesAutocomplete value={value.address} searchOptions={searchOptions} onChange={handleChange} shouldFetchSuggestions={value.address.length > 3} onSelect={handleSelect}>
         {renderFunc}
       </PlacesAutocomplete>
     </>

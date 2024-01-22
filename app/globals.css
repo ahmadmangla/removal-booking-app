@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    body {
+      background-color: #f1f1f1;
+    }
+  }
+
   h1 {
     @apply text-2xl;
   }

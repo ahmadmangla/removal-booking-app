@@ -1,9 +1,4 @@
-interface input {
-  label: string;
-  icon?: any;
-}
-
-const Input = ({ label, icon }: input) => {
+const Input = ({ label, icon }) => {
   return (
     <>
       <div className="mb-6">

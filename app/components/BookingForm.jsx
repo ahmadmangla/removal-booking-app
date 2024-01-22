@@ -49,7 +49,9 @@ const formData = {
       ],
     },
 
-    isThereALift: false,
+    isThereALift: {
+      options: [{ name: "Yes" }, { name: "No" }],
+    },
 
     loadingTime: {
       name: "Loading Time",
@@ -149,7 +151,9 @@ const formData = {
       ],
     },
 
-    isThereALift: false,
+    isThereALift: {
+      options: ["Yes", "No"],
+    },
 
     unLoadingTime: {
       name: "Unloading Time",
@@ -271,88 +275,84 @@ const BookingForm = () => {
     endDate: new Date().setMonth(11),
   });
 
-  const handleValueChange = (newValue: any) => {
+  const handleValueChange = (newValue) => {
     setValue(newValue);
   };
 
   return (
     <>
-      <h1 className="font-medium text-center">Get Instant Quote By filling in the Form</h1>
-      <form className="p-4">
-        <div className="mt-10">
-          <div className="mb-8">
-            <label htmlFor="first-name" className="block text-lg font-medium leading-6 text-gray-900">
-              Select Date and Time for your move
+      <form className="py-12 px-6 ">
+        <div className="mb-8">
+          <label htmlFor="first-name" className="block text-lg font-medium leading-6 text-gray-900">
+            Select Date and Time for your move
+          </label>
+          <div className="my-2">
+            <Datepicker
+              value={value}
+              inputClassName="w-full h-[50px] bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 transition-all   border focus:border-2 border-t-transparent focus:border-t-transparent text-md p-3 rounded-[7px] focus:border-gray-900"
+              placeholder={"Select a Date"}
+              useRange={false}
+              onChange={handleValueChange}
+              asSingle={true}
+            />
+          </div>
+        </div>
+
+        <div className="mb-8">
+          <label htmlFor="number-of-movers" className="block text-lg mb-3 font-medium leading-6 text-gray-900">
+            Select Number of Movers
+          </label>
+          <Select options={formData.numberOfMovers.options} label={formData.numberOfMovers.name} />
+        </div>
+
+        <div className="mb-8 inner-form-wrapper flex justify-between max-sm:flex-wrap gap-4">
+          <div className="w-full">
+            <label htmlFor="moving-from" className="block text-lg font-medium leading-6 text-gray-900">
+              Moving From
             </label>
-            <div className="my-2">
-              <Datepicker
-                //@ts-ignore
-                value={value}
-                inputClassName="w-full h-[50px] bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 transition-all   border focus:border-2 border-t-transparent focus:border-t-transparent text-md p-3 rounded-[7px] focus:border-gray-900"
-                placeholder={"Select a Date"}
-                useRange={false}
-                onChange={handleValueChange}
-                asSingle={true}
-              />
+            <div className="wrapper mt-5">
+              <DistanceCalculator />
+              <Select options={formData.movingFrom.selectFloor.options} label="Select Floor/Level" />
+              <Select options={formData.movingFrom.isThereALift.options} label="is There a lift?" />
+              <Select options={formData.movingFrom.loadingTime.options} label="Loading Time" />
+              <Select options={formData.movingFrom.packingTime.options} label="Estimated Packing Time" />
+              <Select options={formData.movingFrom.disassemblyTime.options} label="Estimated Disassembly Time" />
             </div>
           </div>
-
-          <div className="mb-8">
-            <label htmlFor="number-of-movers" className="block text-lg mb-3 font-medium leading-6 text-gray-900">
-              Select Number of Movers
+          <div className="w-full">
+            <label htmlFor="moving-from" className="block text-lg font-medium leading-6 text-gray-900">
+              Moving To
             </label>
-            <Select options={formData.numberOfMovers.options} label={formData.numberOfMovers.name} />
-          </div>
+            <div className="wrapper mt-5">
+              <DistanceCalculator />
 
-          <div className="mb-8 inner-form-wrapper flex justify-between max-sm:flex-wrap gap-4">
-            <div className="w-full">
-              <label htmlFor="moving-from" className="block text-lg font-medium leading-6 text-gray-900">
-                Moving From
-              </label>
-              <div className="wrapper mt-5">
-                <DistanceCalculator />
-                <Select options={formData.movingFrom.selectFloor.options} label="Select Floor/Level" />
-                {/* <Select options={formData.movingFrom.isThereALift .options? "Yes": "No"} label="is There a lift?" /> */}
-                <Select options={formData.movingFrom.loadingTime.options} label="Loading Time" />
-                <Select options={formData.movingFrom.packingTime.options} label="Estimated Packing Time" />
-                <Select options={formData.movingFrom.disassemblyTime.options} label="Estimated Disassembly Time" />
-              </div>
-            </div>
-            <div className="w-full">
-              <label htmlFor="moving-from" className="block text-lg font-medium leading-6 text-gray-900">
-                Moving To
-              </label>
-              <div className="wrapper mt-5">
-                <DistanceCalculator />
-
-                <Select options={formData.movingTo.selectFloor.options} label="Select Floor/Level" />
-                <Select options={formData.movingTo.unLoadingTime.options} label="Unloading Time" />
-                <Select options={formData.movingTo.unPackingTime.options} label="Estimated Unpacking Time" />
-                <Select options={formData.movingTo.assemblyTime.options} label="Estimated Assembly Time" />
-              </div>
-            </div>
-            <div className="w-full">
-              <label htmlFor="moving-from" className="block text-lg font-medium leading-6 text-gray-900">
-                Additional Options
-              </label>
-              <div className="wrapper mt-5">
-                <Select options={formData.additionalOptions.CongestionCharge.options} label="Congestion Charge" />
-                <Select options={formData.additionalOptions.UltraLowEmissionZone.options} label="Ultra Low Emission Zone" />
-                <Select options={formData.additionalOptions.InsuranceOptions.options} label="Select Insurance Options" />
-              </div>
+              <Select options={formData.movingTo.selectFloor.options} label="Select Floor/Level" />
+              <Select options={formData.movingTo.unLoadingTime.options} label="Unloading Time" />
+              <Select options={formData.movingTo.unPackingTime.options} label="Estimated Unpacking Time" />
+              <Select options={formData.movingTo.assemblyTime.options} label="Estimated Assembly Time" />
             </div>
           </div>
+          <div className="w-full">
+            <label htmlFor="moving-from" className="block text-lg font-medium leading-6 text-gray-900">
+              Additional Options
+            </label>
+            <div className="wrapper mt-5">
+              <Select options={formData.additionalOptions.CongestionCharge.options} label="Congestion Charge" />
+              <Select options={formData.additionalOptions.UltraLowEmissionZone.options} label="Ultra Low Emission Zone" />
+              <Select options={formData.additionalOptions.InsuranceOptions.options} label="Select Insurance Options" />
+            </div>
+          </div>
+        </div>
 
-          <div className="mb-8">
-            <div className="w-full">
-              <label htmlFor="moving-from" className="block text-lg font-medium leading-6 text-gray-900">
-                Personal Details
-              </label>
-              <div className="wrapper mt-5">
-                <Input label="Name" icon={<UserCircleIcon />} />
-                <Input label="Email" icon={<EnvelopeIcon />} />
-                <Input label="Phone" icon={<PhoneIcon />} />
-              </div>
+        <div className="mb-8">
+          <div className="w-full">
+            <label htmlFor="moving-from" className="block text-lg font-medium leading-6 text-gray-900">
+              Personal Details
+            </label>
+            <div className="wrapper mt-5">
+              <Input label="Name" icon={<UserCircleIcon />} />
+              <Input label="Email" icon={<EnvelopeIcon />} />
+              <Input label="Phone" icon={<PhoneIcon />} />
             </div>
           </div>
         </div>
